@@ -13,7 +13,7 @@ const getRandomNumber = function (min, max) {
 
 const getRandomNumberFloat = function (min, max, float = 2) {
   if (min < max) {
-    return +(Math.random() * (max - min + 0.1) + min).toFixed(float); //Тут есть проблема, что если знаков после запятой будет больше одного, то максимальное число станет некорректным
+    return +(Math.random() * (max - min) + min).toFixed(float);
   } else if (min === max) {
     return min;
   } // esLint не дает тут поставить точку с зяпятой
