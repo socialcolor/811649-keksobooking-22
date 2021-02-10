@@ -49,17 +49,17 @@ const getRandomElement = (array) => {
   return newArray;
 };
 
-const getNearbyOffers = () => {
-  let locationX = getRandomNumberFloat(LOCATION_X_MIN, LOCATION_X_MAX, LOCATION_FLOAT);
-  let locationY = getRandomNumberFloat(LOCATION_Y_MIN, LOCATION_Y_MAX, LOCATION_FLOAT);
-  return new Array(OFFER_COUNT).fill().map(() => {
+const generetNearbyOffer = (count) => {
+  return new Array(count).fill().map(() => {
+    const LOCATION_X = getRandomNumberFloat(LOCATION_X_MIN, LOCATION_X_MAX, LOCATION_FLOAT);
+    const LOCATION_Y = getRandomNumberFloat(LOCATION_Y_MIN, LOCATION_Y_MAX, LOCATION_FLOAT);
     return {
       'author': {
         'avatar': `img/avatars/user0${getRandomNumber(1, USER_AVATARS)}.png`,
       },
       'offer': {
         'title': OFFER_TITLES[getRandomNumber(0, OFFER_TITLES.length - 1)],
-        'adress': `${locationX}, ${locationY}`,
+        'adress': `${LOCATION_X}, ${LOCATION_Y}`,
         'price': getRandomNumber(PRICE_MIN, PRICE_MAX),
         'type': OFFER_TYPES[getRandomNumber(0, OFFER_TYPES.length - 1)],
         'rooms': getRandomNumber(1, ROOM_MAX),
@@ -71,43 +71,12 @@ const getNearbyOffers = () => {
         'photos':  getRandomElement(OFFER_PHOTOS),
       },
       'location': {
-        'x': locationX,
-        'y': locationY,
+        'x': LOCATION_X,
+        'y': LOCATION_Y,
       },
     };
   })
-}
+};
 
-
-/*
-Вариант с объявлением массива вне функции
-
-  const getNearbyOffers = () => {
-  let locationX = getRandomNumberFloat(LOCATION_X_MIN, LOCATION_X_MAX, LOCATION_FLOAT);
-  let locationY = getRandomNumberFloat(LOCATION_Y_MIN, LOCATION_Y_MAX, LOCATION_FLOAT);
-  return {
-    'author': {
-      'avatar': `img/avatars/user0${getRandomNumber(1, USER_AVATARS)}.png`,
-    },
-    'offer': {
-      'title': OFFER_TITLES[getRandomNumber(0, OFFER_TITLES.length - 1)],
-      'adress': `${locationX}, ${locationY}`,
-      'price': getRandomNumber(PRICE_MIN, PRICE_MAX),
-      'type': OFFER_TYPES[getRandomNumber(0, OFFER_TYPES.length - 1)],
-      'rooms': getRandomNumber(1, ROOM_MAX),
-      'guests': getRandomNumber(1, GUEST_MAX),
-      'checkin': OFFER_TIMES[getRandomNumber(0, OFFER_TIMES.length - 1)],
-      'checkout': OFFER_TIMES[getRandomNumber(0, OFFER_TIMES.length - 1)],
-      'features': getRandomElement(OFFER_FEATURES),
-      'description': 'Хороший отел с хорошими ценами',
-      'photos': getRandomElement(OFFER_PHOTOS),
-    },
-    'location': {
-      'x': locationX,
-      'y': locationY,
-    },
-  };
-}
-
-const nearbyOffers = new Array(OFFER_COUNT).fill(null).map(() => getNearbyOffers());
- */
+// eslint-disable-next-line no-unused-vars
+const NERBY_OFFERS = generetNearbyOffer(OFFER_COUNT);
