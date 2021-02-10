@@ -68,7 +68,7 @@ const getNearbyOffers = () => {
         'checkout': OFFER_TIMES[getRandomNumber(0, OFFER_TIMES.length - 1)],
         'features': getRandomElement(OFFER_FEATURES),
         'description': 'Хороший отел с хорошими ценами',
-        'photos': OFFER_PHOTOS[getRandomNumber(0, OFFER_PHOTOS.length - 1)],
+        'photos':  getRandomElement(OFFER_PHOTOS),
       },
       'location': {
         'x': locationX,
@@ -100,7 +100,7 @@ const getNearbyOffers = () => {
       'checkout': OFFER_TIMES[getRandomNumber(0, OFFER_TIMES.length - 1)],
       'features': getRandomElement(OFFER_FEATURES),
       'description': 'Хороший отел с хорошими ценами',
-      'photos': OFFER_PHOTOS[getRandomNumber(0, OFFER_PHOTOS.length - 1)],
+      'photos': getRandomElement(OFFER_PHOTOS),
     },
     'location': {
       'x': locationX,
