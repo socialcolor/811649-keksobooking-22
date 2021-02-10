@@ -46,6 +46,4 @@ const generetNearbyOffer = (count) => {
   })
 };
 
-const NERBY_OFFERS = generetNearbyOffer(OFFER_COUNT);
-
-export {NERBY_OFFERS};
+export {generetNearbyOffer, OFFER_COUNT};
