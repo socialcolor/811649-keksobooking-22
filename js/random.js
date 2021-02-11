@@ -22,10 +22,10 @@ const getRandomElement = (array) => {
   let newArray = [];
   let newArrayLength = getRandomNumber(1, array.length);
   for (let i = 0; i < newArrayLength; i++) {
-    let rundomElement = getRandomNumber(0, array.length - 1);
-    let checkRepeat = newArray.some((element) => element === array[rundomElement]);
+    let randomElement = getRandomNumber(0, array.length - 1);
+    let checkRepeat = newArray.some((element) => element === array[randomElement]);
     if (!checkRepeat) {
-      newArray.push(array[rundomElement]);
+      newArray.push(array[randomElement]);
     }
   }
   return newArray;
