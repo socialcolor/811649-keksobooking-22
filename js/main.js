@@ -1,4 +1,6 @@
-import {generetNearbyOffer, OFFER_COUNT} from './generet-nearby-offer.js'
+import {genereteNearbyOffer} from './data.js'
 
-const NERBY_OFFERS = generetNearbyOffer(OFFER_COUNT);
-NERBY_OFFERS;
+const OFFER_COUNT = 10;
+
+let newNearbyOffer = genereteNearbyOffer(OFFER_COUNT);
+newNearbyOffer;

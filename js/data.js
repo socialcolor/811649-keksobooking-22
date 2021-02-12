@@ -1,11 +1,10 @@
-import {getRandomNumber, getRandomNumberFloat, getRandomElement} from './random.js';
+import {getRandomNumber, getRandomNumberFloat, getRandomElement} from './util.js';
 
 const OFFER_TITLES = ['Лучшее предложения в Токие', 'Снять номер дешево', 'Скидки до конца недели'];
 const OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const OFFER_TYPES = ['palace', 'flat', 'house', 'bungalow'];
 const OFFER_TIMES = ['12:00', '13:00', '14:00'];
 const OFFER_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-const OFFER_COUNT = 10;
 const USER_AVATARS = 8;
 const LOCATION_X_MIN = 35.65000;
 const LOCATION_X_MAX = 35.70000;
@@ -17,7 +16,7 @@ const PRICE_MAX = 10000;
 const ROOM_MAX = 5;
 const GUEST_MAX = 5;
 
-const generetNearbyOffer = (count) => {
+const genereteNearbyOffer = (count) => {
   return new Array(count).fill().map(() => {
     const LOCATION_X = getRandomNumberFloat(LOCATION_X_MIN, LOCATION_X_MAX, LOCATION_FLOAT);
     const LOCATION_Y = getRandomNumberFloat(LOCATION_Y_MIN, LOCATION_Y_MAX, LOCATION_FLOAT);
@@ -46,4 +45,4 @@ const generetNearbyOffer = (count) => {
   })
 };
 
-export {generetNearbyOffer, OFFER_COUNT};
+export {genereteNearbyOffer};
