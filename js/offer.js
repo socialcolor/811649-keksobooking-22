@@ -2,7 +2,7 @@ import {nearbyOffer} from './data.js';
 
 const mapCanvas = document.querySelector('#map-canvas');
 const templateCard = document.querySelector('#card').content;
-const OfferTypesValue = {
+const OfferTypeValues = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
@@ -18,7 +18,7 @@ const renderOffers = () => {
     offer.querySelector('.popup__avatar').setAttribute('src', currentValue['author']['avatar']);
     offer.querySelector('.popup__text--address').textContent = currentValue['offer']['adress'];
     offer.querySelector('.popup__text--price').innerHTML = `${currentValue['offer']['price']} <span>₽/ночь</span>`;
-    offer.querySelector('.popup__type').textContent = OfferTypesValue[currentValue['offer']['type']];
+    offer.querySelector('.popup__type').textContent = OfferTypeValues[currentValue['offer']['type']];
     offer.querySelector('.popup__text--capacity').textContent = `${currentValue['offer']['rooms']} комнаты для ${currentValue['offer']['guests']} гостей`;
     offer.querySelector('.popup__text--time').textContent = `Заезд после ${currentValue['offer']['checkin']}, выезд до ${currentValue['offer']['checkout']}`;
     offer.querySelector('.popup__description').textContent = currentValue['offer']['description'];
