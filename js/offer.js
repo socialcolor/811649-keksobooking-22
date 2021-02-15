@@ -14,6 +14,7 @@ const renderOffers = () => {
 
   nearbyOffer.forEach((currentValue) => {
     const offer = templateCard.cloneNode(true);
+    
     offer.querySelector('.popup__title').textContent = currentValue['offer']['title'];
     offer.querySelector('.popup__avatar').setAttribute('src', currentValue['author']['avatar']);
     offer.querySelector('.popup__text--address').textContent = currentValue['offer']['adress'];
