@@ -11,7 +11,7 @@ const createOfferMarkup = (offers) => {
   offerTemplate.querySelector('.popup__avatar').setAttribute('src', author.avatar);
   offerTemplate.querySelector('.popup__text--address').textContent = offer.adress;
   offerTemplate.querySelector('.popup__text--price').innerHTML = `${offer.price} <span>₽/ночь</span>`;
-  offerTemplate.querySelector('.popup__type').textContent = offerType[offer.type]['name'];
+  offerTemplate.querySelector('.popup__type').textContent = offerType[offer.type].name;
   offerTemplate.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
   offerTemplate.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   offerTemplate.querySelector('.popup__description').textContent = offer.description;

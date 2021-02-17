@@ -6,13 +6,17 @@ const housingPrice = form.querySelector('#price');
 const checkin = form.querySelector('#timein');
 const checkout = form.querySelector('#timeout');
 
-const onTypeChange = () => {
-  housingPrice.placeholder = offerType[housingType.value]['price'];
-  housingPrice.setAttribute('min', offerType[housingType.value]['price']);
+const setPriceSettings = () => {
+  const price = offerType[housingType.value].price;
+  housingPrice.placeholder = price;
+  housingPrice.setAttribute('min', price);
 };
 
-document.addEventListener('DOMContentLoaded', onTypeChange);
-housingType.addEventListener('change', onTypeChange);
+const onDocumentLoad = () => setPriceSettings();
+const onHousingTypeChange = () => setPriceSettings();
+
+document.addEventListener('DOMContentLoaded', onDocumentLoad);
+housingType.addEventListener('change', onHousingTypeChange);
 
 const syncTimeValues = (from, to) => to.value = from.value;
 
