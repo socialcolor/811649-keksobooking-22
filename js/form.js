@@ -17,7 +17,6 @@ onTypeOfHousingChange.addEventListener('change', () => {
 
 onTimeChange.addEventListener('change', (evt) => {
   const index = evt.target.selectedIndex;
-  checkin.options[index].set
   checkin.options[index].selected = true;
   checkout.options[index].selected = true;
 });
