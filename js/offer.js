@@ -1,6 +1,3 @@
-import {nearbyOffer} from './data.js';
-
-const mapCanvas = document.querySelector('#map-canvas');
 const templateCard = document.querySelector('#card').content;
 const OfferTypeValues = {
   flat: 'Квартира',
@@ -9,33 +6,41 @@ const OfferTypeValues = {
   palace: 'Дворец',
 };
 
-const renderOffers = () => {
-  const offerFragment = document.createDocumentFragment();
+const createOfferMarkup = (offers) => {
+  const offerTemplate = templateCard.cloneNode(true);
+  const {offer, author} = offers;
+  const features = offerTemplate.querySelector('.popup__features');
+  const photos = offerTemplate.querySelector('.popup__photos');
 
-  nearbyOffer.forEach((currentValue) => {
-    const offer = templateCard.cloneNode(true);
-    
-    offer.querySelector('.popup__title').textContent = currentValue['offer']['title'];
-    offer.querySelector('.popup__avatar').setAttribute('src', currentValue['author']['avatar']);
-    offer.querySelector('.popup__text--address').textContent = currentValue['offer']['adress'];
-    offer.querySelector('.popup__text--price').innerHTML = `${currentValue['offer']['price']} <span>₽/ночь</span>`;
-    offer.querySelector('.popup__type').textContent = OfferTypeValues[currentValue['offer']['type']];
-    offer.querySelector('.popup__text--capacity').textContent = `${currentValue['offer']['rooms']} комнаты для ${currentValue['offer']['guests']} гостей`;
-    offer.querySelector('.popup__text--time').textContent = `Заезд после ${currentValue['offer']['checkin']}, выезд до ${currentValue['offer']['checkout']}`;
-    offer.querySelector('.popup__description').textContent = currentValue['offer']['description'];
-    offer.querySelector('.popup__features').innerHTML = '';
-    offer.querySelector('.popup__photos').innerHTML = '';
-    for (let value of currentValue['offer']['features']) {
-      offer.querySelector('.popup__features').insertAdjacentHTML('beforeend', `<li class="popup__feature popup__feature--${value}"></li>`)
-    }
-    for (let value of currentValue['offer']['photos']) {
-      offer.querySelector('.popup__photos').insertAdjacentHTML('beforeend', `<img src="${value}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`)
-    }
+  offerTemplate.querySelector('.popup__title').textContent = offer.title;
+  offerTemplate.querySelector('.popup__avatar').setAttribute('src', author.avatar);
+  offerTemplate.querySelector('.popup__text--address').textContent = offer.adress;
+  offerTemplate.querySelector('.popup__text--price').innerHTML = `${offer.price} <span>₽/ночь</span>`;
+  offerTemplate.querySelector('.popup__type').textContent = OfferTypeValues[offer.type];
+  offerTemplate.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
+  offerTemplate.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+  offerTemplate.querySelector('.popup__description').textContent = offer.description;
 
-    offerFragment.appendChild(offer);
-  });
+  features.innerHTML = '';
+  photos.innerHTML = '';
 
-  mapCanvas.appendChild(offerFragment);
+  for (let value of offer.features) {
+    features.insertAdjacentHTML('beforeend', `<li class="popup__feature popup__feature--${value}"></li>`)
+  }
+  for (let value of offer.photos) {
+    photos.insertAdjacentHTML('beforeend', `<img src="${value}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`)
+  }
+
+  return offerTemplate;
 };
 
-export {renderOffers};
+const createOffersMarkup = (offers) => {
+  const offersFragment = document.createDocumentFragment();
+  offers.forEach((offer) => {
+    const fragment = createOfferMarkup(offer);
+    offersFragment.appendChild(fragment);
+  });
+  return offersFragment;
+};
+
+export {createOfferMarkup, createOffersMarkup};
