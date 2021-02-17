@@ -1,5 +1,5 @@
 import {genereteNearbyOffer} from './data.js';
-import {createOfferMarkup, createOffersMarkup} from './offer.js';
+import {createOfferMarkup} from './offer.js';
 
 const mapCanvas = document.querySelector('#map-canvas');
 const OFFER_COUNT = 10;
