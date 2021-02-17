@@ -1,22 +1,27 @@
+import {offerType} from './data.js'
+
 const form = document.querySelector('.ad-form');
-const onTypeOfHousingChange = form.querySelector('#type');
-const typeOfHousingPrice = form.querySelector('#price');
-const typesOfHousing = {
-  'bungalow': 0,
-  'flat': 1000,
-  'house': 5000,
-  'palace': 10000,
-};
-const onTimeChange = form.querySelector('.ad-form__element--time');
+const housingType = form.querySelector('#type');
+const housingPrice = form.querySelector('#price');
 const checkin = form.querySelector('#timein');
 const checkout = form.querySelector('#timeout');
 
-onTypeOfHousingChange.addEventListener('change', () => {
-  typeOfHousingPrice.placeholder = typesOfHousing[onTypeOfHousingChange.value];
-});
+const setPriceSettings = () => {
+  const price = offerType[housingType.value].price;
+  housingPrice.placeholder = price;
+  housingPrice.setAttribute('min', price);
+};
 
-onTimeChange.addEventListener('change', (evt) => {
-  const index = evt.target.selectedIndex;
-  checkin.options[index].selected = true;
-  checkout.options[index].selected = true;
-});
+const onDocumentLoad = () => setPriceSettings();
+const onHousingTypeChange = () => setPriceSettings();
+
+document.addEventListener('DOMContentLoaded', onDocumentLoad);
+housingType.addEventListener('change', onHousingTypeChange);
+
+const syncTimeValues = (from, to) => to.value = from.value;
+
+const onCheckinChange = () => syncTimeValues(checkin, checkout);
+const onCheckoutChange = () => syncTimeValues(checkout, checkin);
+
+checkin.addEventListener('change', onCheckinChange);
+checkout.addEventListener('change', onCheckoutChange);

@@ -15,6 +15,24 @@ const PRICE_MIN = 1000;
 const PRICE_MAX = 10000;
 const ROOM_MAX = 5;
 const GUEST_MAX = 5;
+const offerType = {
+  bungalow: {
+    name: 'Бунгало',
+    price: 0,
+  },
+  flat: {
+    name: 'Квартира',
+    price: 1000,
+  },
+  house: {
+    name: 'Дом',
+    price: 5000,
+  },
+  palace: {
+    name: 'Дворец',
+    price: 10000,
+  },
+};
 
 const genereteNearbyOffer = (count) => {
   return new Array(count).fill().map(() => {
@@ -45,4 +63,4 @@ const genereteNearbyOffer = (count) => {
   })
 };
 
-export {genereteNearbyOffer};
+export {genereteNearbyOffer, offerType};
