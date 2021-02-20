@@ -1,10 +1,10 @@
-import {genereteNearbyOffer} from './data.js';
-import {createOfferMarkup} from './offer.js';
+import {genereteOffer} from './data.js';
+import {createOffersMarkup} from './offer.js';
 import './form.js';
+import {addOfferMap} from './map.js';
 
 const OFFER_COUNT = 10;
-const mapCanvas = document.querySelector('#map-canvas');
-const nearbyOffers = genereteNearbyOffer(OFFER_COUNT);
 
-const offerMarkup = createOfferMarkup(nearbyOffers[0]);
-mapCanvas.appendChild(offerMarkup);
+const offers = genereteOffer(OFFER_COUNT);
+const offerMarkup = createOffersMarkup(offers);
+addOfferMap(offers, offerMarkup);
