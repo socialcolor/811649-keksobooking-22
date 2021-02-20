@@ -8,7 +8,7 @@ const checkin = form.querySelector('#timein');
 const checkout = form.querySelector('#timeout');
 const address = form.querySelector('#address');
 
-const stateForm = (toggle) => {
+const changeFormState = (toggle) => {
   const formElements = form.querySelectorAll('input, select, textarea, button');
   if(toggle){
     form.classList.add('ad-form--disabled');
@@ -18,7 +18,7 @@ const stateForm = (toggle) => {
   stateElement(formElements, toggle);
 };
 
-stateForm(true);
+changeFormState(true);
 
 const setPriceSettings = () => {
   const price = offerType[housingType.value].price;
@@ -40,4 +40,4 @@ const onCheckoutChange = () => syncTimeValues(checkout, checkin);
 checkin.addEventListener('change', onCheckinChange);
 checkout.addEventListener('change', onCheckoutChange);
 
-export {stateForm, address};
+export {changeFormState, address};

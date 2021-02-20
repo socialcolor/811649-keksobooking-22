@@ -1,13 +1,13 @@
 /* global L:readonly */
 import {stateElement} from './util.js';
-import {stateForm, address} from './form.js';
+import {changeFormState, address} from './form.js';
 
 const MAP_LAT = 35.681700;
 const MAP_LNG = 139.753882;
 
 const filter = document.querySelector('.map__filters')
 
-const stateFilter = (toggle) => {
+const changeFilterState = (toggle) => {
   const filterElements = filter.querySelectorAll('select, input');
   if (toggle) {
     filter.classList.add('map__filters--disabled');
@@ -17,11 +17,11 @@ const stateFilter = (toggle) => {
   stateElement(filterElements, toggle);
 };
 
-stateFilter(true);
+changeFilterState(true);
 
 const onMapLoad = () => {
-  stateFilter(false);
-  stateForm(false);
+  changeFilterState(false);
+  changeFormState(false);
   address.value = `${MAP_LAT} ${MAP_LNG}`
 };
 
