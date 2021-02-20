@@ -31,10 +31,10 @@ const getRandomElement = (array) => {
   return newArray;
 };
 
-const stateElement = (elements, toggle) => {
+const changeElementState = (elements, toggle) => {
   for (let i of elements) {
     i.disabled = toggle;
   }
 };
 
-export {getRandomNumber, getRandomNumberFloat, getRandomElement, stateElement};
+export {getRandomNumber, getRandomNumberFloat, getRandomElement, changeElementState};

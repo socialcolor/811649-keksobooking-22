@@ -1,5 +1,5 @@
 import {offerType} from './data.js';
-import {stateElement} from './util.js';
+import {changeElementState} from './util.js';
 
 const form = document.querySelector('.ad-form');
 const housingType = form.querySelector('#type');
@@ -15,7 +15,7 @@ const changeFormState = (toggle) => {
   } else {
     form.classList.remove('ad-form--disabled');
   }
-  stateElement(formElements, toggle);
+  changeElementState(formElements, toggle);
 };
 
 changeFormState(true);
