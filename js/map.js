@@ -1,5 +1,5 @@
 /* global L:readonly */
-import {stateElement} from './util.js';
+import {changeElementState} from './util.js';
 import {changeFormState, address} from './form.js';
 
 const MAP_LAT = 35.681700;
@@ -14,7 +14,7 @@ const changeFilterState = (toggle) => {
   } else {
     filter.classList.remove('map__filters--disabled');
   }
-  stateElement(filterElements, toggle);
+  changeElementState(filterElements, toggle);
 };
 
 changeFilterState(true);
