@@ -22,7 +22,7 @@ changeFilterState(true);
 const onMapLoad = () => {
   changeFilterState(false);
   changeFormState(false);
-  address.value = `${MAP_LAT} ${MAP_LNG}`
+  address.value = `${MAP_LAT.toFixed(5)} ${MAP_LNG.toFixed(5)}`
 };
 
 const map = L.map('map-canvas')
