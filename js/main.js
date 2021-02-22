@@ -6,5 +6,5 @@ import {addOfferMap} from './map.js';
 const OFFER_COUNT = 10;
 
 const offers = genereteOffers(OFFER_COUNT);
-const offerMarkup = createOffersMarkup(offers);
-addOfferMap(offers, offerMarkup);
+const offersMarkup = createOffersMarkup(offers);
+addOfferMap(offers, offersMarkup);
