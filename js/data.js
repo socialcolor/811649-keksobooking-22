@@ -34,7 +34,7 @@ const offerType = {
   },
 };
 
-const genereteOffer = (count) => {
+const genereteOffers = (count) => {
   return new Array(count).fill().map(() => {
     const LOCATION_X = getRandomNumberFloat(LOCATION_X_MIN, LOCATION_X_MAX, LOCATION_FLOAT);
     const LOCATION_Y = getRandomNumberFloat(LOCATION_Y_MIN, LOCATION_Y_MAX, LOCATION_FLOAT);
@@ -63,4 +63,4 @@ const genereteOffer = (count) => {
   })
 };
 
-export {genereteOffer, offerType};
+export {genereteOffers, offerType};
