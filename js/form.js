@@ -8,14 +8,14 @@ const checkin = form.querySelector('#timein');
 const checkout = form.querySelector('#timeout');
 const address = form.querySelector('#address');
 
-const changeFormState = (toggle) => {
+const changeFormState = (state) => {
   const formElements = form.querySelectorAll('input, select, textarea, button');
-  if(toggle){
+  if(state){
     form.classList.add('ad-form--disabled');
   } else {
     form.classList.remove('ad-form--disabled');
   }
-  changeElementState(formElements, toggle);
+  changeElementState(formElements, state);
 };
 
 changeFormState(true);

@@ -7,14 +7,14 @@ const MAP_LNG = 139.753882;
 
 const filter = document.querySelector('.map__filters')
 
-const changeFilterState = (toggle) => {
+const changeFilterState = (state) => {
   const filterElements = filter.querySelectorAll('select, input');
-  if (toggle) {
+  if (state) {
     filter.classList.add('map__filters--disabled');
   } else {
     filter.classList.remove('map__filters--disabled');
   }
-  changeElementState(filterElements, toggle);
+  changeElementState(filterElements, state);
 };
 
 changeFilterState(true);
