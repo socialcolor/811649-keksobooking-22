@@ -19,9 +19,6 @@ const changeFormState = (state) => {
 
 changeFormState(true);
 
-const onRoomChange = () => roomNumber.value == '100' ? guestNumber.value = '0' : guestNumber.value = roomNumber.value;
-const onGuestChange = () => guestNumber.value == '0' ? roomNumber.value = '100' : roomNumber.value = guestNumber.value;
-
 const setPriceSettings = () => {
   const price = offerType[housingType.value].price;
   housingPrice.placeholder = price;
@@ -30,7 +27,6 @@ const setPriceSettings = () => {
 
 const onDocumentLoad = () => {
   setPriceSettings()
-  onRoomChange();
 };
 const onHousingTypeChange = () => setPriceSettings();
 
@@ -71,7 +67,36 @@ const onPriceValidation = () => {
 
 housingPrice.addEventListener('input', onPriceValidation);
 
-roomNumber.addEventListener('change', onRoomChange);
-guestNumber.addEventListener('change', onGuestChange);
+const onRoomValidation = () => {
+  if (+roomNumber.value == 1 && +guestNumber.value > 1) {
+    roomNumber.setCustomValidity('Комната расчитана на 1 гостя');
+  } else if (+roomNumber.value == 2 && +guestNumber.value > 2) {
+    roomNumber.setCustomValidity('Комната расчитана максимум на 2 человека');
+  } else if (+roomNumber.value == 3 && +guestNumber.value > 3) {
+    roomNumber.setCustomValidity('Комната расчитана максимум на 3 человека');
+  } else if (+roomNumber.value == 100 && +guestNumber.value != 0) {
+    roomNumber.setCustomValidity('Не для гостей');
+  } else {
+    roomNumber.setCustomValidity('');
+  }
+  roomNumber.reportValidity();
+}
+
+const onGuestValidation = () => {
+  if (+guestNumber.value == 2 && +roomNumber.value < 2) {
+    guestNumber.setCustomValidity('Нужно минимум 2 комнаты');
+  } else if (+guestNumber.value == 3 && +roomNumber.value < 3) {
+    guestNumber.setCustomValidity('Нужно 3 комнаты');
+  } else if (+guestNumber.value != 0 && +roomNumber.value == 100) {
+    guestNumber.setCustomValidity('Нужно 100 комнат');
+  } else {
+    guestNumber.setCustomValidity('');
+  }
+  guestNumber.reportValidity();
+}
+
+roomNumber.addEventListener('change', onRoomValidation);
+guestNumber.addEventListener('change', onGuestValidation);
+
 
 export {changeFormState, address};
