@@ -67,6 +67,7 @@ const onPriceValidation = () => {
 
 housingPrice.addEventListener('input', onPriceValidation);
 
+
 const onRoomValidation = () => {
   if (+roomNumber.value == 1 && +guestNumber.value > 1) {
     roomNumber.setCustomValidity('Комната расчитана на 1 гостя');
