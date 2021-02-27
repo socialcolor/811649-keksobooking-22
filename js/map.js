@@ -7,14 +7,14 @@ const MAP_LNG = 139.753882;
 
 const filter = document.querySelector('.map__filters')
 
-const changeFilterState = (toggle) => {
+const changeFilterState = (state) => {
   const filterElements = filter.querySelectorAll('select, input');
-  if (toggle) {
+  if (state) {
     filter.classList.add('map__filters--disabled');
   } else {
     filter.classList.remove('map__filters--disabled');
   }
-  changeElementState(filterElements, toggle);
+  changeElementState(filterElements, state);
 };
 
 changeFilterState(true);
@@ -22,7 +22,7 @@ changeFilterState(true);
 const onMapLoad = () => {
   changeFilterState(false);
   changeFormState(false);
-  address.value = `${MAP_LAT} ${MAP_LNG}`
+  address.value = `${MAP_LAT.toFixed(5)} ${MAP_LNG.toFixed(5)}`
 };
 
 const map = L.map('map-canvas')
