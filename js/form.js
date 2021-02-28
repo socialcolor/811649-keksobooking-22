@@ -68,7 +68,7 @@ const onPriceValidation = () => {
 housingPrice.addEventListener('input', onPriceValidation);
 
 
-const onRoomValidation = () => {
+/* const onRoomValidation = () => {
   if (+roomNumber.value == 1 && +guestNumber.value > 1) {
     roomNumber.setCustomValidity('Комната расчитана на 1 гостя');
   } else if (+roomNumber.value == 2 && +guestNumber.value > 2) {
@@ -81,20 +81,29 @@ const onRoomValidation = () => {
     roomNumber.setCustomValidity('');
   }
   roomNumber.reportValidity();
-}
+} */
+
+const onRoomValidation = () => {
+  if (+roomNumber.value < +guestNumber.value && +roomNumber.value != 0) {
+    roomNumber.setCustomValidity(`Для ${roomNumber.value} ${roomNumber.value == 1 ? 'комнаты' : 'комнат'} слишком много гостей`);
+  } else if (+roomNumber.value == 100) {
+    roomNumber.setCustomValidity('Такое количество комнат не для гостей');
+  } else {
+    roomNumber.setCustomValidity('');
+  }
+  roomNumber.reportValidity();
+};
 
 const onGuestValidation = () => {
-  if (+guestNumber.value == 2 && +roomNumber.value < 2) {
-    guestNumber.setCustomValidity('Нужно минимум 2 комнаты');
-  } else if (+guestNumber.value == 3 && +roomNumber.value < 3) {
-    guestNumber.setCustomValidity('Нужно 3 комнаты');
-  } else if (+guestNumber.value != 0 && +roomNumber.value == 100) {
-    guestNumber.setCustomValidity('Нужно 100 комнат');
+  if (+guestNumber.value > +roomNumber.value && +guestNumber.value != 0) {
+    guestNumber.setCustomValidity(`Для ${guestNumber.value} ${guestNumber.value == 1 ? 'гостя' : 'гостей'} слишком маленькая комната`);
+  } else if (+guestNumber == 0) {
+    guestNumber.setCustomValidity(`Для ${guestNumber.value} ${guestNumber.value == 1 ? 'гостя' : 'гостей'} слишком маленькая комната`);
   } else {
-    guestNumber.setCustomValidity('');
+    guestNumber.setCustomValidity('Нужно 100 или более комнат');
   }
   guestNumber.reportValidity();
-}
+};
 
 roomNumber.addEventListener('change', onRoomValidation);
 guestNumber.addEventListener('change', onGuestValidation);
