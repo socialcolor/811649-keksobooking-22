@@ -56,10 +56,13 @@ const onTitileInput = () => {
 title.addEventListener('input', onTitileInput);
 
 const onPriceInput = () => {
-  if (+housingPrice.value < +housingPrice.min) {
-    housingPrice.setCustomValidity(`Минимальная цена ${housingPrice.min}`);
-  } else if (+housingPrice.value > +housingPrice.max) {
-    housingPrice.setCustomValidity(`Максимальная цена ${housingPrice.max}`);
+  const price = Number(housingPrice.value);
+  const priceMin = Number(housingPrice.min);
+  const priceMax = Number(housingPrice.max);
+  if (price < priceMin) {
+    housingPrice.setCustomValidity(`Минимальная цена ${priceMin}`);
+  } else if (price > priceMax) {
+    housingPrice.setCustomValidity(`Максимальная цена ${priceMax}`);
   } else {
     housingPrice.setCustomValidity('');
   }
