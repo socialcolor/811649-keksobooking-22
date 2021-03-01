@@ -1,6 +1,7 @@
 import {offerType} from './data.js';
 import {changeElementState} from './util.js';
 
+const MAX_ROOM = 100;
 const form = document.querySelector('.ad-form');
 const housingType = form.querySelector('#type');
 const housingPrice = form.querySelector('#price');
@@ -41,7 +42,7 @@ const onCheckoutChange = () => syncTimeValues(checkout, checkin);
 checkin.addEventListener('change', onCheckinChange);
 checkout.addEventListener('change', onCheckoutChange);
 
-const onTitileValidation = () => {
+const onTitileInput = () => {
   if (title.validity.tooShort) {
     title.setCustomValidity(`Ещё ${title.minLength -title.value.length} симв.`);
   } else if (title.validity.tooLong) {
@@ -52,9 +53,9 @@ const onTitileValidation = () => {
   title.reportValidity();
 };
 
-title.addEventListener('input', onTitileValidation);
+title.addEventListener('input', onTitileInput);
 
-const onPriceValidation = () => {
+const onPriceInput = () => {
   if (+housingPrice.value < +housingPrice.min) {
     housingPrice.setCustomValidity(`Минимальная цена ${housingPrice.min}`);
   } else if (+housingPrice.value > +housingPrice.max) {
@@ -65,39 +66,26 @@ const onPriceValidation = () => {
   housingPrice.reportValidity();
 }
 
-housingPrice.addEventListener('input', onPriceValidation);
+housingPrice.addEventListener('input', onPriceInput);
 
-
-const onRoomValidation = () => {
-  if (+roomNumber.value == 1 && +guestNumber.value > 1) {
-    roomNumber.setCustomValidity('Комната расчитана на 1 гостя');
-  } else if (+roomNumber.value == 2 && +guestNumber.value > 2) {
-    roomNumber.setCustomValidity('Комната расчитана максимум на 2 человека');
-  } else if (+roomNumber.value == 3 && +guestNumber.value > 3) {
-    roomNumber.setCustomValidity('Комната расчитана максимум на 3 человека');
-  } else if (+roomNumber.value == 100 && +guestNumber.value != 0) {
-    roomNumber.setCustomValidity('Не для гостей');
+const validateRoomsAndGuest = () => {
+  const rooms = Number(roomNumber.value);
+  const geusts = Number(guestNumber.value);
+  if (rooms < geusts && rooms != 0) {
+    roomNumber.setCustomValidity(`Для ${rooms} ${rooms == 1 ? 'комнаты' : 'комнат'} слишком много гостей`);
+  } else if (geusts != MAX_ROOM) {
+    roomNumber.setCustomValidity('Такое количество комнат не для гостей');
   } else {
     roomNumber.setCustomValidity('');
   }
   roomNumber.reportValidity();
-}
+};
 
-const onGuestValidation = () => {
-  if (+guestNumber.value == 2 && +roomNumber.value < 2) {
-    guestNumber.setCustomValidity('Нужно минимум 2 комнаты');
-  } else if (+guestNumber.value == 3 && +roomNumber.value < 3) {
-    guestNumber.setCustomValidity('Нужно 3 комнаты');
-  } else if (+guestNumber.value != 0 && +roomNumber.value == 100) {
-    guestNumber.setCustomValidity('Нужно 100 комнат');
-  } else {
-    guestNumber.setCustomValidity('');
-  }
-  guestNumber.reportValidity();
-}
+const onRoomChange = () => validateRoomsAndGuest();
+const onGuestChange = () => validateRoomsAndGuest();
 
-roomNumber.addEventListener('change', onRoomValidation);
-guestNumber.addEventListener('change', onGuestValidation);
+roomNumber.addEventListener('change', onRoomChange);
+guestNumber.addEventListener('change', onGuestChange);
 
 
 export {changeFormState, address};
