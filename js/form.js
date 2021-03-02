@@ -1,7 +1,21 @@
-import {offerType} from './data.js';
-import {changeElementState} from './util.js';
+import {
+  offerType
+} from './data.js';
+import {
+  changeElementState,
+  isEscEvent,
+  deleteElement
+} from './util.js';
+import {
+  sendData
+} from './api.js';
+import {
+  showSuccessMessage,
+  showErrorMessage
+} from './modal.js';
 
 const MAX_ROOM = 100;
+const MIN_ROOM = 0;
 const form = document.querySelector('.ad-form');
 const housingType = form.querySelector('#type');
 const housingPrice = form.querySelector('#price');
@@ -11,6 +25,7 @@ const address = form.querySelector('#address');
 const title = form.querySelector('#title');
 const roomNumber = form.querySelector('#room_number');
 const guestNumber = form.querySelector('#capacity');
+const resetButton = form.querySelector('.ad-form__reset');
 
 const changeFormState = (state) => {
   const formElements = form.querySelectorAll('input, select, textarea, button');
@@ -74,9 +89,9 @@ housingPrice.addEventListener('input', onPriceInput);
 const validateRoomsAndGuest = () => {
   const rooms = Number(roomNumber.value);
   const geusts = Number(guestNumber.value);
-  if (rooms < geusts && rooms != 0) {
+  if (rooms < geusts && rooms !== MIN_ROOM) {
     roomNumber.setCustomValidity(`Для ${rooms} ${rooms == 1 ? 'комнаты' : 'комнат'} слишком много гостей`);
-  } else if (geusts != MAX_ROOM) {
+  } else if (geusts !== MAX_ROOM) {
     roomNumber.setCustomValidity('Такое количество комнат не для гостей');
   } else {
     roomNumber.setCustomValidity('');
@@ -91,4 +106,75 @@ roomNumber.addEventListener('change', onRoomChange);
 guestNumber.addEventListener('change', onGuestChange);
 
 
-export {changeFormState, address};
+
+const successSendForm = () => {
+  showSuccessMessage()
+  const message = document.querySelector('.success');
+
+  const onSuccessMessageClick = () => {
+    const message = document.querySelector('.success');
+    message.remove();
+    document.removeEventListener('keydown', onEscKeydown)
+  };
+  const onEscKeydown = (evt) => {
+    if (isEscEvent(evt)) {
+      deleteElement(message)
+      document.removeEventListener('keydown', onEscKeydown);
+    }
+  };
+  document.addEventListener('keydown', onEscKeydown);
+  message.addEventListener('click', onSuccessMessageClick);
+};
+
+const errorSendForm = () => {
+  showErrorMessage()
+  const message = document.querySelector('.error');
+  const button = document.querySelector('.error__button');
+
+  const onErrorMessageClick = () => {
+    const message = document.querySelector('.error');
+    message.remove();
+    document.removeEventListener('keydown', onEscKeydown)
+  };
+  message.addEventListener('click', onErrorMessageClick);
+
+  const onButtonSubmit = () => {
+    message.remove();
+    document.removeEventListener('keydown', onEscKeydown);
+  };
+  button.addEventListener('submit', onButtonSubmit) //событие никогда не произойдет, т.к. происходит всегда событие click
+
+  const onEscKeydown = (evt) => {
+    if (isEscEvent(evt)) {
+      deleteElement(message)
+      document.removeEventListener('keydown', onEscKeydown);
+    }
+  };
+  document.addEventListener('keydown', onEscKeydown);
+};
+
+
+const resetForm = () => {
+  title.value = '';
+};
+
+resetButton.addEventListener('submut', resetForm)
+
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  sendData(
+    () => successSendForm(),
+    () => errorSendForm(),
+    new FormData(evt.target),
+  );
+};
+
+form.addEventListener('submit', onFormSubmit);
+
+
+
+export {
+  changeFormState,
+  address
+};

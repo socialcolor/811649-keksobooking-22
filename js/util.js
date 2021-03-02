@@ -38,4 +38,24 @@ const changeElementState = (elements, state) => {
   });
 };
 
-export {getRandomNumber, getRandomNumberFloat, getRandomElement, changeElementState};
+const deleteElement = (element) => {
+  element.remove();
+}
+
+const isEscEvent = (evt) => {
+  return evt.key === 'Escape' || evt.key === 'Esc';
+};
+
+const removeHandler = (element, act, handler) => {
+  element.removeEventListener(act, handler);
+}
+
+export {
+  getRandomNumber,
+  getRandomNumberFloat,
+  getRandomElement,
+  changeElementState,
+  deleteElement,
+  isEscEvent,
+  removeHandler
+};
