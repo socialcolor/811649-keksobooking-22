@@ -25,6 +25,8 @@ const address = form.querySelector('#address');
 const title = form.querySelector('#title');
 const roomNumber = form.querySelector('#room_number');
 const guestNumber = form.querySelector('#capacity');
+const description = form.querySelector('#description');
+const features = form.querySelectorAll('.features input');
 const resetButton = form.querySelector('.ad-form__reset');
 
 const changeFormState = (state) => {
@@ -67,7 +69,6 @@ const onTitileInput = () => {
   }
   title.reportValidity();
 };
-
 title.addEventListener('input', onTitileInput);
 
 const onPriceInput = () => {
@@ -83,15 +84,14 @@ const onPriceInput = () => {
   }
   housingPrice.reportValidity();
 }
-
 housingPrice.addEventListener('input', onPriceInput);
 
 const validateRoomsAndGuest = () => {
   const rooms = Number(roomNumber.value);
   const geusts = Number(guestNumber.value);
-  if (rooms < geusts && rooms !== MIN_ROOM) {
+  if (rooms < geusts && geusts !== MIN_ROOM) {
     roomNumber.setCustomValidity(`Для ${rooms} ${rooms == 1 ? 'комнаты' : 'комнат'} слишком много гостей`);
-  } else if (geusts !== MAX_ROOM) {
+  } else if (geusts === MIN_ROOM) {
     roomNumber.setCustomValidity('Такое количество комнат не для гостей');
   } else {
     roomNumber.setCustomValidity('');
@@ -104,8 +104,6 @@ const onGuestChange = () => validateRoomsAndGuest();
 
 roomNumber.addEventListener('change', onRoomChange);
 guestNumber.addEventListener('change', onGuestChange);
-
-
 
 const successSendForm = () => {
   showSuccessMessage()
@@ -153,11 +151,19 @@ const errorSendForm = () => {
   document.addEventListener('keydown', onEscKeydown);
 };
 
-
 const resetForm = () => {
   title.value = '';
+  housingType.options[1].selected = true;
+  setPriceSettings();
+  roomNumber.options[0].selected = true;
+  guestNumber.options[2].selected = true;
+  description.value = '';
+  checkin.options[0].selected = true;
+  checkout.options[0].selected = true;
+  for (let element of features) {
+    element.value = false;
+  }
 };
-
 resetButton.addEventListener('submut', resetForm)
 
 const onFormSubmit = (evt) => {
@@ -169,10 +175,7 @@ const onFormSubmit = (evt) => {
     new FormData(evt.target),
   );
 };
-
 form.addEventListener('submit', onFormSubmit);
-
-
 
 export {
   changeFormState,
