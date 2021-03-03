@@ -29,37 +29,45 @@ const guestNumber = form.querySelector('#capacity');
 const description = form.querySelector('#description');
 const features = form.querySelectorAll('.features input');
 const resetButton = form.querySelector('.ad-form__reset');
+const filter = document.querySelector('.map__filters')
+const filterType = filter.querySelector('#housing-type');
+const filterPrice = filter.querySelector('#housing-price');
+const filterRoom = filter.querySelector('#housing-rooms');
+const filterGuest = filter.querySelector('#housing-guests');
+const filterfeatures= filter.querySelectorAll('#housing-features input');
+
+const resetFilter = () => {
+  filterType.options[0].selected = true;
+  filterPrice.options[0].selected = true;
+  filterRoom.options[0].selected = true;
+  filterGuest.options[0].selected = true;
+  for (let input of filterfeatures) {
+    input.checked = false;
+  }
+};
 
 const changeFormState = (state) => {
   const formElements = form.querySelectorAll('input, select, textarea, button');
   state ? form.classList.add('ad-form--disabled') : form.classList.remove('ad-form--disabled');
   changeElementState(formElements, state);
 };
-
 changeFormState(true);
-
 const setPriceSettings = () => {
   const price = offerType[housingType.value].price;
   housingPrice.placeholder = price;
   housingPrice.setAttribute('min', price);
 };
-
 const onDocumentLoad = () => {
   setPriceSettings()
 };
 const onHousingTypeChange = () => setPriceSettings();
-
 document.addEventListener('DOMContentLoaded', onDocumentLoad);
 housingType.addEventListener('change', onHousingTypeChange);
-
 const syncTimeValues = (from, to) => to.value = from.value;
-
 const onCheckinChange = () => syncTimeValues(checkin, checkout);
 const onCheckoutChange = () => syncTimeValues(checkout, checkin);
-
 checkin.addEventListener('change', onCheckinChange);
 checkout.addEventListener('change', onCheckoutChange);
-
 const onTitileInput = () => {
   if (title.validity.tooShort) {
     title.setCustomValidity(`Ещё ${title.minLength -title.value.length} симв.`);
@@ -71,7 +79,6 @@ const onTitileInput = () => {
   title.reportValidity();
 };
 title.addEventListener('input', onTitileInput);
-
 const onPriceInput = () => {
   const price = Number(housingPrice.value);
   const priceMin = Number(housingPrice.min);
@@ -84,7 +91,7 @@ const onPriceInput = () => {
     housingPrice.setCustomValidity('');
   }
   housingPrice.reportValidity();
-}
+};
 housingPrice.addEventListener('input', onPriceInput);
 
 const validateRoomsAndGuest = () => {
@@ -99,12 +106,30 @@ const validateRoomsAndGuest = () => {
   }
   roomNumber.reportValidity();
 };
-
 const onRoomChange = () => validateRoomsAndGuest();
 const onGuestChange = () => validateRoomsAndGuest();
-
 roomNumber.addEventListener('change', onRoomChange);
 guestNumber.addEventListener('change', onGuestChange);
+
+const resetForm = () => {
+  title.value = '';
+  housingType.options[1].selected = true;
+  setPriceSettings();
+  roomNumber.options[0].selected = true;
+  guestNumber.options[2].selected = true;
+  description.value = '';
+  checkin.options[0].selected = true;
+  checkout.options[0].selected = true;
+  for (let input of features) {
+    input.checked = false;
+  }
+};
+const resetFilterAndForm = () => {
+  resetForm();
+  resetFilter();
+};
+const onResetButtonClick = () => resetFilterAndForm();
+resetButton.addEventListener('click', onResetButtonClick)
 
 const successSendForm = (evt) => {
   showSuccessMessage(evt);
@@ -114,11 +139,13 @@ const successSendForm = (evt) => {
     const message = document.querySelector('.success');
     message.remove();
     document.removeEventListener('keydown', onEscKeydown)
+    resetFilterAndForm();
   };
   const onEscKeydown = (evt) => {
     if (isEscEvent(evt)) {
       deleteElement(message)
       document.removeEventListener('keydown', onEscKeydown);
+      resetFilterAndForm();
     }
   };
   document.addEventListener('keydown', onEscKeydown);
@@ -150,22 +177,6 @@ const errorSendForm = () => {
     }
   };
   document.addEventListener('keydown', onEscKeydown);
-};
-
-
-const resetForm = (evt) => {
-  evt.preventDefault();
-  title.value = '';
-  housingType.options[1].selected = true;
-  setPriceSettings();
-  roomNumber.options[0].selected = true;
-  guestNumber.options[2].selected = true;
-  description.value = '';
-  checkin.options[0].selected = true;
-  checkout.options[0].selected = true;
-  for (let input of features) {
-    input.value = false;
-  }
 };
 
 const onFormSubmit = (evt) => {

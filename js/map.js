@@ -6,21 +6,6 @@ const MAP_LAT = 35.681700;
 const MAP_LNG = 139.753882;
 
 const filter = document.querySelector('.map__filters')
-const filterType = filter.querySelector('#housing-type');
-const filterPrice = filter.querySelector('#housing-price');
-const filterRoom = filter.querySelector('#housing-rooms');
-const filterGuest = filter.querySelector('#housing-guests');
-const filterfeatures= filter.querySelectorAll('#housing-features input');
-
-const resetFilter = () => {
-  filterType.options[0].selected = true;
-  filterPrice.options[0].selected = true;
-  filterRoom.options[0].selected = true;
-  filterGuest.options[0].selected = true;
-  for (let input of filterfeatures) {
-    input.checked = false;
-  }
-};
 const changeFilterState = (state) => {
   const filterElements = filter.querySelectorAll('select, input');
   if (state) {
@@ -87,4 +72,4 @@ const addOfferMap = (offers, markup) => {
   });
 };
 
-export {addOfferMap, resetFilter}
+export {addOfferMap}
