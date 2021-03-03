@@ -3,7 +3,6 @@ import {
   isEscEvent
 } from './util.js';
 
-
 const showMassage = (text) => {
   const markup = `<div class="alert">
   <div class="overlay"></div>
@@ -29,7 +28,7 @@ const showMassage = (text) => {
     }
   };
 
-  closeButton.addEventListener('click', onCloseButtonClick); 
+  closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onEscKeydown);
 };
 

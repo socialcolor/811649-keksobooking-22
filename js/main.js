@@ -1,9 +1,13 @@
 import {
   createOffersMarkup
 } from './offer.js';
-import './form.js';
 import {
-  addOfferMap
+  resetForm,
+  resetButton
+} from './form.js';
+import {
+  addOfferMap,
+  resetFilter
 } from './map.js';
 import {
   getData
@@ -15,3 +19,10 @@ const renderMarker = (data) => {
 };
 
 getData(renderMarker);
+
+const onResetButtonClick = (evt) => {
+  resetForm(evt);
+  resetFilter();
+};
+resetButton.addEventListener('click', onResetButtonClick)
+

@@ -14,6 +14,7 @@ import {
   showErrorMessage
 } from './modal.js';
 
+
 const MAX_ROOM = 100;
 const MIN_ROOM = 0;
 const form = document.querySelector('.ad-form');
@@ -89,9 +90,9 @@ housingPrice.addEventListener('input', onPriceInput);
 const validateRoomsAndGuest = () => {
   const rooms = Number(roomNumber.value);
   const geusts = Number(guestNumber.value);
-  if (rooms < geusts && geusts !== 0) {
+  if (rooms < geusts && geusts !== MIN_ROOM) {
     roomNumber.setCustomValidity(`Для ${rooms} ${rooms == 1 ? 'комнаты' : 'комнат'} слишком много гостей`);
-  } else if (geusts === 100) {
+  } else if (geusts === MAX_ROOM) {
     roomNumber.setCustomValidity('Такое количество комнат не для гостей');
   } else {
     roomNumber.setCustomValidity('');
@@ -105,8 +106,8 @@ const onGuestChange = () => validateRoomsAndGuest();
 roomNumber.addEventListener('change', onRoomChange);
 guestNumber.addEventListener('change', onGuestChange);
 
-const successSendForm = () => {
-  showSuccessMessage()
+const successSendForm = (evt) => {
+  showSuccessMessage(evt);
   const message = document.querySelector('.success');
 
   const onSuccessMessageClick = () => {
@@ -151,7 +152,9 @@ const errorSendForm = () => {
   document.addEventListener('keydown', onEscKeydown);
 };
 
-const resetForm = () => {
+
+const resetForm = (evt) => {
+  evt.preventDefault();
   title.value = '';
   housingType.options[1].selected = true;
   setPriceSettings();
@@ -160,11 +163,10 @@ const resetForm = () => {
   description.value = '';
   checkin.options[0].selected = true;
   checkout.options[0].selected = true;
-  for (let element of features) {
-    element.value = false;
+  for (let input of features) {
+    input.value = false;
   }
 };
-resetButton.addEventListener('submut', resetForm)
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
@@ -179,5 +181,7 @@ form.addEventListener('submit', onFormSubmit);
 
 export {
   changeFormState,
+  resetForm,
+  resetButton,
   address
 };
