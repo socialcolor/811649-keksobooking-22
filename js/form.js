@@ -89,9 +89,9 @@ housingPrice.addEventListener('input', onPriceInput);
 const validateRoomsAndGuest = () => {
   const rooms = Number(roomNumber.value);
   const geusts = Number(guestNumber.value);
-  if (rooms < geusts && geusts !== MIN_ROOM) {
+  if (rooms < geusts && geusts !== 0) {
     roomNumber.setCustomValidity(`Для ${rooms} ${rooms == 1 ? 'комнаты' : 'комнат'} слишком много гостей`);
-  } else if (geusts === MIN_ROOM) {
+  } else if (geusts === 100) {
     roomNumber.setCustomValidity('Такое количество комнат не для гостей');
   } else {
     roomNumber.setCustomValidity('');
