@@ -1,10 +1,17 @@
-import {genereteOffers} from './data.js';
-import {createOffersMarkup} from './offer.js';
+import {
+  createOffersMarkup
+} from './offer.js';
 import './form.js';
-import {addOfferMap} from './map.js';
+import {
+  addOfferMap
+} from './map.js';
+import {
+  getData
+} from './api.js';
 
-const OFFER_COUNT = 10;
+const renderMarker = (data) => {
+  const murkup = createOffersMarkup(data);
+  addOfferMap(data, murkup);
+};
 
-const offers = genereteOffers(OFFER_COUNT);
-const offersMarkup = createOffersMarkup(offers);
-addOfferMap(offers, offersMarkup);
+getData(renderMarker);

@@ -6,7 +6,6 @@ const MAP_LAT = 35.681700;
 const MAP_LNG = 139.753882;
 
 const filter = document.querySelector('.map__filters')
-
 const changeFilterState = (state) => {
   const filterElements = filter.querySelectorAll('select, input');
   if (state) {
@@ -29,7 +28,7 @@ const map = L.map('map-canvas')
   .on('load', onMapLoad).setView({
     lat: MAP_LAT,
     lng: MAP_LNG,
-  }, 13);
+  }, 10);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -63,8 +62,8 @@ const addOfferMap = (offers, markup) => {
   const popups = markup.querySelectorAll('.popup');
   offers.forEach((value, index) => {
     const marker = L.marker({
-      lat: value.location.x,
-      lng: value.location.y,
+      lat: value.location.lat,
+      lng: value.location.lng,
     }, {
       icon: offerIcon,
     });
