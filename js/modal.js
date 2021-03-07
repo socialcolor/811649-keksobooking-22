@@ -3,20 +3,6 @@ import {
   isEscEvent
 } from './util.js';
 
-const onCloseButtonClick = () => {
-  const alert = document.querySelector('.alert');
-  deleteElement(alert)
-  document.removeEventListener('keydown', onEscKeydown);
-};
-
-const onEscKeydown = (evt) => {
-  if(isEscEvent(evt)) {
-    const alert = document.querySelector('.alert');
-    deleteElement(alert)
-    document.removeEventListener('keydown', onEscKeydown);
-  }
-};
-
 const showMassage = (text) => {
   const markup = `<div class="alert">
   <div class="overlay"></div>
@@ -26,10 +12,20 @@ const showMassage = (text) => {
   </div>
   </div>`;
   document.body.insertAdjacentHTML('afterbegin', markup);
-  const closeButton = document.querySelector('.close-button')
+  const alert = document.querySelector('.alert');
 
-  closeButton.addEventListener('click', onCloseButtonClick);
+  const onAlertClick = () => {
+    deleteElement(alert)
+    document.removeEventListener('keydown', onEscKeydown);
+  };
+  const onEscKeydown = (evt) => {
+    if(isEscEvent(evt)) {
+      deleteElement(alert)
+      document.removeEventListener('keydown', onEscKeydown);
+    }
+  };
   document.addEventListener('keydown', onEscKeydown);
+  alert.addEventListener('click', onAlertClick);
 };
 
 

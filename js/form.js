@@ -42,6 +42,13 @@ const changeFormState = (state) => {
 };
 changeFormState(true);
 
+const resetFilterAndForm = () => {
+  form.reset();
+  filter.reset();
+  setPriceSettings();
+  resetMainMarker();
+};
+
 const closeSendMessage = (evt, showMessage, element, statefilterAndForm) => {
   showMessage(evt);
   const message = document.querySelector('.' + element);
@@ -86,13 +93,6 @@ setPriceSettings();
 
 const syncTimeValues = (from, to) => to.value = from.value;
 
-const resetFilterAndForm = () => {
-  form.reset();
-  filter.reset();
-  setPriceSettings();
-  resetMainMarker();
-};
-
 const onHousingTypeChange = () => setPriceSettings();
 const onCheckinChange = () => syncTimeValues(checkin, checkout);
 const onCheckoutChange = () => syncTimeValues(checkout, checkin);
@@ -124,7 +124,7 @@ const validateRoomsAndGuest = () => {
   const geusts = Number(guestNumber.value);
   if (rooms < geusts && geusts !== MIN_ROOM) {
     roomNumber.setCustomValidity(`Для ${rooms} ${rooms == 1 ? 'комнаты' : 'комнат'} слишком много гостей`);
-  } else if (geusts !== MAX_ROOM) {
+  } else if ((rooms === MAX_ROOM && geusts !== MIN_ROOM) || (geusts === MIN_ROOM && rooms !== MAX_ROOM)) {
     roomNumber.setCustomValidity('Такое количество комнат не для гостей');
   } else {
     roomNumber.setCustomValidity('');
