@@ -1,23 +1,14 @@
 /* global L:readonly */
-import {changeElementState} from './util.js';
-import {changeFormState, address} from './form.js';
+import {
+  changeFormState,
+  address
+} from './form.js';
+import {
+  changeFilterState
+} from './filter.js';
 
 const MAP_LAT = 35.681700;
 const MAP_LNG = 139.753882;
-
-const filter = document.querySelector('.map__filters')
-
-const changeFilterState = (state) => {
-  const filterElements = filter.querySelectorAll('select, input');
-  if (state) {
-    filter.classList.add('map__filters--disabled');
-  } else {
-    filter.classList.remove('map__filters--disabled');
-  }
-  changeElementState(filterElements, state);
-};
-
-changeFilterState(true);
 
 const onMapLoad = () => {
   changeFilterState(false);
@@ -29,7 +20,7 @@ const map = L.map('map-canvas')
   .on('load', onMapLoad).setView({
     lat: MAP_LAT,
     lng: MAP_LNG,
-  }, 13);
+  }, 10);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -51,20 +42,27 @@ const offerIcon = L.icon({
 
 const onMarkerMove = (evt) => address.value = `${evt.target.getLatLng().lat.toFixed(5)} ${evt.target.getLatLng().lng.toFixed(5)}`;
 
-L.marker({
+const mainMarker = L.marker({
   lat: MAP_LAT,
   lng: MAP_LNG,
 }, {
   draggable: true,
   icon: mainIcon,
-}).addTo(map).on('moveend', onMarkerMove);
+});
 
-const addOfferMap = (offers, markup) => {
+mainMarker.addTo(map).on('moveend', onMarkerMove);
+
+const resetMainMarker = () => {
+  mainMarker.setLatLng([MAP_LAT, MAP_LNG]);
+  address.value = `${MAP_LAT.toFixed(5)} ${MAP_LNG.toFixed(5)}`;
+};
+
+const offersToMap = (offers, markup) => {
   const popups = markup.querySelectorAll('.popup');
   offers.forEach((value, index) => {
     const marker = L.marker({
-      lat: value.location.x,
-      lng: value.location.y,
+      lat: value.location.lat,
+      lng: value.location.lng,
     }, {
       icon: offerIcon,
     });
@@ -73,4 +71,7 @@ const addOfferMap = (offers, markup) => {
   });
 };
 
-export {addOfferMap}
+export {
+  offersToMap,
+  resetMainMarker
+}

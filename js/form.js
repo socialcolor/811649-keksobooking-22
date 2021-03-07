@@ -1,6 +1,28 @@
-import {offerType} from './data.js';
-import {changeElementState} from './util.js';
+import {
+  offerType
+} from './data.js';
+import {
+  changeElementState,
+  isEscEvent,
+  deleteElement
+} from './util.js';
+import {
+  sendData
+} from './api.js';
+import {
+  showSuccessMessage,
+  showErrorMessage
+} from './modal.js';
+import {
+  filter
+} from './filter.js';
+import {
+  resetMainMarker
+} from './map.js';
 
+
+const MAX_ROOM = 100;
+const MIN_ROOM = 0;
 const form = document.querySelector('.ad-form');
 const housingType = form.querySelector('#type');
 const housingPrice = form.querySelector('#price');
@@ -10,38 +32,71 @@ const address = form.querySelector('#address');
 const title = form.querySelector('#title');
 const roomNumber = form.querySelector('#room_number');
 const guestNumber = form.querySelector('#capacity');
+const resetButton = form.querySelector('.ad-form__reset');
+const linkToSend = 'https://22.javascript.pages.academy/keksobooking';
 
 const changeFormState = (state) => {
   const formElements = form.querySelectorAll('input, select, textarea, button');
   state ? form.classList.add('ad-form--disabled') : form.classList.remove('ad-form--disabled');
   changeElementState(formElements, state);
 };
-
 changeFormState(true);
+
+const closeSendMessage = (evt, showMessage, element, statefilterAndForm) => {
+  showMessage(evt);
+  const message = document.querySelector('.' + element);
+  const onSuccessMessageClick = () => {
+    message.remove();
+    document.removeEventListener('keydown', onEscKeydown)
+    if (statefilterAndForm) {
+      resetFilterAndForm();
+    }
+  };
+  const onEscKeydown = (evt) => {
+    if (isEscEvent(evt)) {
+      deleteElement(message)
+      document.removeEventListener('keydown', onEscKeydown);
+    }
+  };
+
+  message.addEventListener('click', onSuccessMessageClick);
+  document.addEventListener('keydown', onEscKeydown);
+};
+
+const successSendForm = (evt) => closeSendMessage(evt, showSuccessMessage, 'success', true);
+const errorSendForm = (evt) => closeSendMessage(evt, showErrorMessage, 'error', false);
+
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  sendData(
+    linkToSend,
+    () => successSendForm(evt),
+    () => errorSendForm(evt),
+    new FormData(evt.target),
+  );
+};
 
 const setPriceSettings = () => {
   const price = offerType[housingType.value].price;
   housingPrice.placeholder = price;
   housingPrice.setAttribute('min', price);
 };
-
-const onDocumentLoad = () => {
-  setPriceSettings()
-};
-const onHousingTypeChange = () => setPriceSettings();
-
-document.addEventListener('DOMContentLoaded', onDocumentLoad);
-housingType.addEventListener('change', onHousingTypeChange);
+setPriceSettings();
 
 const syncTimeValues = (from, to) => to.value = from.value;
 
+const resetFilterAndForm = () => {
+  form.reset();
+  filter.reset();
+  setPriceSettings();
+  resetMainMarker();
+};
+
+const onHousingTypeChange = () => setPriceSettings();
 const onCheckinChange = () => syncTimeValues(checkin, checkout);
 const onCheckoutChange = () => syncTimeValues(checkout, checkin);
-
-checkin.addEventListener('change', onCheckinChange);
-checkout.addEventListener('change', onCheckoutChange);
-
-const onTitileValidation = () => {
+const onTitileInput = () => {
   if (title.validity.tooShort) {
     title.setCustomValidity(`Ещё ${title.minLength -title.value.length} симв.`);
   } else if (title.validity.tooLong) {
@@ -51,53 +106,50 @@ const onTitileValidation = () => {
   }
   title.reportValidity();
 };
-
-title.addEventListener('input', onTitileValidation);
-
-const onPriceValidation = () => {
-  if (+housingPrice.value < +housingPrice.min) {
-    housingPrice.setCustomValidity(`Минимальная цена ${housingPrice.min}`);
-  } else if (+housingPrice.value > +housingPrice.max) {
-    housingPrice.setCustomValidity(`Максимальная цена ${housingPrice.max}`);
+const onPriceInput = () => {
+  const price = Number(housingPrice.value);
+  const priceMin = Number(housingPrice.min);
+  const priceMax = Number(housingPrice.max);
+  if (price < priceMin) {
+    housingPrice.setCustomValidity(`Минимальная цена ${priceMin}`);
+  } else if (price > priceMax) {
+    housingPrice.setCustomValidity(`Максимальная цена ${priceMax}`);
   } else {
     housingPrice.setCustomValidity('');
   }
   housingPrice.reportValidity();
-}
-
-housingPrice.addEventListener('input', onPriceValidation);
-
-
-const onRoomValidation = () => {
-  if (+roomNumber.value == 1 && +guestNumber.value > 1) {
-    roomNumber.setCustomValidity('Комната расчитана на 1 гостя');
-  } else if (+roomNumber.value == 2 && +guestNumber.value > 2) {
-    roomNumber.setCustomValidity('Комната расчитана максимум на 2 человека');
-  } else if (+roomNumber.value == 3 && +guestNumber.value > 3) {
-    roomNumber.setCustomValidity('Комната расчитана максимум на 3 человека');
-  } else if (+roomNumber.value == 100 && +guestNumber.value != 0) {
-    roomNumber.setCustomValidity('Не для гостей');
+};
+const validateRoomsAndGuest = () => {
+  const rooms = Number(roomNumber.value);
+  const geusts = Number(guestNumber.value);
+  if (rooms < geusts && geusts !== MIN_ROOM) {
+    roomNumber.setCustomValidity(`Для ${rooms} ${rooms == 1 ? 'комнаты' : 'комнат'} слишком много гостей`);
+  } else if (geusts !== MAX_ROOM) {
+    roomNumber.setCustomValidity('Такое количество комнат не для гостей');
   } else {
     roomNumber.setCustomValidity('');
   }
   roomNumber.reportValidity();
-}
+};
+const onRoomChange = () => validateRoomsAndGuest();
+const onGuestChange = () => validateRoomsAndGuest();
+roomNumber.addEventListener('change', onRoomChange);
+guestNumber.addEventListener('change', onGuestChange);
+const onResetButtonClick = (evt) => {
+  evt.preventDefault();
+  resetFilterAndForm();
+};
 
-const onGuestValidation = () => {
-  if (+guestNumber.value == 2 && +roomNumber.value < 2) {
-    guestNumber.setCustomValidity('Нужно минимум 2 комнаты');
-  } else if (+guestNumber.value == 3 && +roomNumber.value < 3) {
-    guestNumber.setCustomValidity('Нужно 3 комнаты');
-  } else if (+guestNumber.value != 0 && +roomNumber.value == 100) {
-    guestNumber.setCustomValidity('Нужно 100 комнат');
-  } else {
-    guestNumber.setCustomValidity('');
-  }
-  guestNumber.reportValidity();
-}
+housingType.addEventListener('change', onHousingTypeChange);
+checkin.addEventListener('change', onCheckinChange);
+checkout.addEventListener('change', onCheckoutChange);
+title.addEventListener('input', onTitileInput);
+housingPrice.addEventListener('input', onPriceInput);
+resetButton.addEventListener('click', onResetButtonClick);
+form.addEventListener('submit', onFormSubmit);
 
-roomNumber.addEventListener('change', onRoomValidation);
-guestNumber.addEventListener('change', onGuestValidation);
-
-
-export {changeFormState, address};
+export {
+  changeFormState,
+  resetButton,
+  address
+};

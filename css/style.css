@@ -926,7 +926,7 @@ fieldset {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 9999;
 
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -1025,4 +1025,41 @@ fieldset {
 
 .hidden {
   display: none;
+}
+
+.alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+}
+
+.alert__box {
+  width: 300px;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  text-align: center;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.alert button {
+  border: 1px solid #aba3a3;
+  border-radius: 15px;
+  padding: 4px 10px;
+  background: #fff;
+  box-shadow: 0 2px 5px 0px;
 }

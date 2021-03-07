@@ -1,10 +1,23 @@
-import {genereteOffers} from './data.js';
-import {createOffersMarkup} from './offer.js';
+import {
+  createOffersMarkup
+} from './offer.js';
+import './filter.js'
+import {
+  offersToMap
+} from './map.js';
 import './form.js';
-import {addOfferMap} from './map.js';
+import {
+  getData
+} from './api.js';
+import {showMassage} from './modal.js';
 
-const OFFER_COUNT = 10;
+const linkToGet = 'https://22.javascript.pages.academy/keksobooking/data';
 
-const offers = genereteOffers(OFFER_COUNT);
-const offersMarkup = createOffersMarkup(offers);
-addOfferMap(offers, offersMarkup);
+const renderMarker = (data) => {
+  const markups = createOffersMarkup(data);
+  offersToMap(data, markups);
+};
+
+const failGetData = () => showMassage('Данные не загрузились');
+
+getData(linkToGet, renderMarker, failGetData);
