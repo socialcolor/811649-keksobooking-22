@@ -33,7 +33,7 @@ const title = form.querySelector('#title');
 const roomNumber = form.querySelector('#room_number');
 const guestNumber = form.querySelector('#capacity');
 const resetButton = form.querySelector('.ad-form__reset');
-const linkToSend = 'https://22.javascript.pages.academy/keksobooking';
+const LINK_TO_SET = 'https://22.javascript.pages.academy/keksobooking';
 
 const changeFormState = (state) => {
   const formElements = form.querySelectorAll('input, select, textarea, button');
@@ -77,7 +77,7 @@ const onFormSubmit = (evt) => {
   evt.preventDefault();
 
   sendData(
-    linkToSend,
+    LINK_TO_SET,
     () => successSendForm(evt),
     () => errorSendForm(evt),
     new FormData(evt.target),

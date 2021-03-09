@@ -11,13 +11,13 @@ import {
 } from './api.js';
 import {showMassage} from './modal.js';
 
-const linkToGet = 'https://22.javascript.pages.academy/keksobooking/data';
-
+const LINK_TO_GET = 'https://22.javascript.pages.academy/keksobooking/data';
+const markers = [];
 const renderMarker = (data) => {
   const markups = createOffersMarkup(data);
-  offersToMap(data, markups);
+  markers.push(offersToMap(data, markups));
 };
+console.log(markers);
 
 const failGetData = () => showMassage('Данные не загрузились');
-
-getData(linkToGet, renderMarker, failGetData);
+getData(LINK_TO_GET, renderMarker, failGetData);

@@ -57,19 +57,24 @@ const resetMainMarker = () => {
   address.value = `${MAP_LAT.toFixed(5)} ${MAP_LNG.toFixed(5)}`;
 };
 
+
 const offersToMap = (offers, markup) => {
+  const markers = [];
   const popups = markup.querySelectorAll('.popup');
   offers.forEach((value, index) => {
-    const marker = L.marker({
+    const newMarker = L.marker({
       lat: value.location.lat,
       lng: value.location.lng,
     }, {
       icon: offerIcon,
     });
-    marker.addTo(map);
-    marker.bindPopup(popups[index]);
+    markers.push(newMarker);
+    newMarker.addTo(map);
+    newMarker.bindPopup(popups[index]);
   });
+  return markers;
 };
+
 
 export {
   offersToMap,
