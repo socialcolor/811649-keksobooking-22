@@ -6,9 +6,13 @@ import {
 import {
   changeFilterState
 } from './filter.js';
+import {
+  createOffersMarkup
+} from './offer.js';
 
 const MAP_LAT = 35.681700;
 const MAP_LNG = 139.753882;
+let markers = [];
 
 const onMapLoad = () => {
   changeFilterState(false);
@@ -57,9 +61,19 @@ const resetMainMarker = () => {
   address.value = `${MAP_LAT.toFixed(5)} ${MAP_LNG.toFixed(5)}`;
 };
 
+const removeMarkers = () => {
+  for (let marker of markers) {
+    map.removeLayer(marker);
+  }
+};
 
-const offersToMap = (offers, markup) => {
-  const markers = [];
+const offersToMap = (offers) => {
+  removeMarkers();
+  if (offers.length > 10) {
+    offers = offers.slice(0, 10);
+  }
+  markers = [];
+  const markup = createOffersMarkup(offers);
   const popups = markup.querySelectorAll('.popup');
   offers.forEach((value, index) => {
     const newMarker = L.marker({
@@ -72,11 +86,10 @@ const offersToMap = (offers, markup) => {
     newMarker.addTo(map);
     newMarker.bindPopup(popups[index]);
   });
-  return markers;
 };
-
 
 export {
   offersToMap,
-  resetMainMarker
+  resetMainMarker,
+  removeMarkers
 }
