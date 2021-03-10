@@ -67,7 +67,7 @@ const removeMarkers = () => {
   }
 };
 
-const offersToMap = (offers) => {
+const offersAddToMap = (offers) => {
   removeMarkers();
   if (offers.length > 10) {
     offers = offers.slice(0, 10);
@@ -86,10 +86,11 @@ const offersToMap = (offers) => {
     newMarker.addTo(map);
     newMarker.bindPopup(popups[index]);
   });
+  return markers;
 };
 
 export {
-  offersToMap,
+  offersAddToMap,
   resetMainMarker,
   removeMarkers
 }

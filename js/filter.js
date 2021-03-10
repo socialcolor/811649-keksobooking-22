@@ -2,51 +2,87 @@ import {
   changeElementState
 } from './util.js';
 import {
-  offersToMap
+  offersAddToMap
 } from './map.js';
 
-const filter = document.querySelector('.map__filters');
-const type = filter.querySelector('#housing-type');
-const price = filter.querySelector('#housing-price');
-const room = filter.querySelector('#housing-rooms');
-const guest = filter.querySelector('#housing-guests');
-const features = filter.querySelectorAll('#housing-features input');
-
+const filterMap = document.querySelector('.map__filters');
+const filterElements = filterMap.querySelectorAll('select, input');
+const house = filterMap.querySelector('#housing-type');
+const price = filterMap.querySelector('#housing-price');
+const room = filterMap.querySelector('#housing-rooms');
+const guest = filterMap.querySelector('#housing-guests');
+const features = filterMap.querySelectorAll('#housing-features input');
+const DEFAULT_HOUSE_TYPE = 'any';
+const PRICE_RANGE = {
+  middle: {
+    min: 10000,
+    max: 50000,
+  },
+  low: {
+    max: 10000,
+  },
+  high: {
+    min: 50000,
+  },
+};
 const changeFilterState = (state) => {
-  const filterElements = filter.querySelectorAll('select, input');
   if (state) {
-    filter.classList.add('map__filters--disabled');
+    filterMap.classList.add('map__filters--disabled');
   } else {
-    filter.classList.remove('map__filters--disabled');
+    filterMap.classList.remove('map__filters--disabled');
   }
   changeElementState(filterElements, state);
 };
-
 changeFilterState(true);
 
-const changeFilter = (compare) => {
-  let markers = [];
-  const type = compare.value;
-  window.data.forEach((element) => {
-    if (element.offer.type === type) {
-      markers.push(element)
-    }
-  });
-  return markers;
+const filterOffersByType = (data) => {
+  if (house.value === DEFAULT_HOUSE_TYPE) {
+    return data
+  }
+  return data.filter((item) => (item.offer.type === house.value));
 };
 
-const onFilterChange = () => {
-  const houseType = changeFilter(type);
-  if(houseType.length === 0) {
-    offersToMap(window.data);
-  } else {
-    offersToMap(houseType);
+const filterOffersByPrice = (data) => {
+  switch (price.value) {
+    case 'any':
+      return data
+    case 'middle':
+      return data.filter((item) => item.offer.price >= PRICE_RANGE.middle.min && item.offer.price <= PRICE_RANGE.middle.max)
+    case 'low':
+      return data.filter((item) => item.offer.price <= PRICE_RANGE.low.max)
+    case 'high':
+      return data.filter((item) => item.offer.price >= PRICE_RANGE.high.min)
   }
 };
 
-filter.addEventListener('change', onFilterChange);
+const filterOffersByRooms = (data) => {
+  if (room.value === 'any') {
+    return data
+  }
+  return data.filter((item) => item.offer.rooms === Number(room.value))
+};
+
+const filterOffersByGuests = (data) => {
+  if (guest.value === 'any') {
+    return data
+  }
+  return data.filter((item) => item.offer.guests === Number(guest.value))
+};
+
+const onChagneFilter = (data) => {
+  const offersByType = filterOffersByType(data);
+  const offersByPrice = filterOffersByPrice(offersByType);
+  const offerByRooms = filterOffersByRooms(offersByPrice);
+  const offerByGuests = filterOffersByGuests(offerByRooms);
+  offersAddToMap(offerByGuests);
+};
+const setFilterListener = (cb) => {
+  filterMap.addEventListener('change', cb);
+};
 
 export {
-  filter,
-  changeFilterState
+  filterMap,
+  changeFilterState,
+  setFilterListener,
+  onChagneFilter
 }

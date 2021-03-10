@@ -7,7 +7,6 @@ const getData = (link, onSuccess, onFail) => {
       onFail();
     })
     .then((data) => {
-      window.data = data;
       onSuccess(data);
     })
     .catch(() => {

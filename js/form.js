@@ -14,7 +14,7 @@ import {
   showErrorMessage
 } from './modal.js';
 import {
-  filter
+  filterMap
 } from './filter.js';
 import {
   resetMainMarker
@@ -44,7 +44,7 @@ changeFormState(true);
 
 const resetFilterAndForm = () => {
   form.reset();
-  filter.reset();
+  filterMap.reset();
   setPriceSettings();
   resetMainMarker();
 };
