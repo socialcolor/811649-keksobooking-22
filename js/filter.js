@@ -4,7 +4,6 @@ import {
 import {
   offersAddToMap
 } from './map.js';
-
 const filterMap = document.querySelector('.map__filters');
 const filterElements = filterMap.querySelectorAll('select, input');
 const house = filterMap.querySelector('#housing-type');
@@ -12,7 +11,6 @@ const price = filterMap.querySelector('#housing-price');
 const room = filterMap.querySelector('#housing-rooms');
 const guest = filterMap.querySelector('#housing-guests');
 const features = filterMap.querySelectorAll('#housing-features input');
-const DEFAULT_HOUSE_TYPE = 'any';
 const PRICE_RANGE = {
   low: {
     max: 10000,
@@ -43,9 +41,9 @@ const filterOfferByPrice = (data) => {
     case 'low':
       return data.offer.price < PRICE_RANGE.low.max;
     case 'middle':
-      return data.offer.price >=  PRICE_RANGE.middle.min && data.offer.price <=  PRICE_RANGE.middle.max;
+      return data.offer.price >= PRICE_RANGE.middle.min && data.offer.price <= PRICE_RANGE.middle.max;
     case 'high':
-      return data.offer.price >=  PRICE_RANGE.high.min;
+      return data.offer.price >= PRICE_RANGE.high.min;
   }
 };
 
@@ -59,6 +57,7 @@ const checkedFeatures = () => {
   return checkedfeatures;
 };
 
+//Срабатывает если фильтры совпадают на 100% с тем что указано в объявлении
 const compareFeatures = (element, features) => {
   const checkedFeatures = features;
   let counter = 0;
@@ -78,6 +77,7 @@ const compareFeatures = (element, features) => {
   }
 };
 
+
 const onChagneFilter = (data) => {
   const filtred = [];
   const type = house.value;
@@ -94,9 +94,8 @@ const onChagneFilter = (data) => {
   });
   offersAddToMap(filtred)
 };
-
 const setFilterListener = (cb) => {
-  filterMap.addEventListener('change', cb);
+ filterMap.addEventListener('change', cb);
 };
 
 export {

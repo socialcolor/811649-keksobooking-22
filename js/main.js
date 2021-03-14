@@ -16,7 +16,7 @@ import {
 const LINK_TO_GET = 'https://22.javascript.pages.academy/keksobooking/data';
 const failGetData = () => showMassage('Данные не загрузились');
 const onDataSuccess = (data) => {
-  offersAddToMap(data)
+  offersAddToMap(data);
   setFilterListener(() => onChagneFilter(data));
 }
 
