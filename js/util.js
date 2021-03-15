@@ -50,14 +50,16 @@ const removeHandler = (element, act, handler) => {
   element.removeEventListener(act, handler);
 }
 
-const debounce = (f, ms) => {
-  return function() {
-    const fnCall = () => {
-      f.apply(this, arguments);
-    };
-    clearTimeout(fnCall);
-    setTimeout(fnCall, ms);
-  };
+function debounce(callback, delay = 500) {
+  let timeoutId;
+
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      timeoutId = null;
+      callback(...args);
+    }, delay);
+  }
 }
 
 export {

@@ -72,7 +72,7 @@ const compareFeatures = (element, features) => {
     } else {
       return false
     }
-  } else if(checkedFeatures.length === 0) {
+  } else if (checkedFeatures.length === 0) {
     return true;
   }
 };
@@ -95,7 +95,7 @@ const onChagneFilter = (data) => {
   offersAddToMap(filtred)
 };
 const setFilterListener = (cb) => {
- filterMap.addEventListener('change', cb);
+  filterMap.addEventListener('change', cb);
 };
 
 export {
