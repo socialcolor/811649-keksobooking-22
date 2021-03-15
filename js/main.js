@@ -14,8 +14,8 @@ import {
 } from './filter.js';
 import {
   debounce
-} from './util.js'
-
+} from './util.js';
+import './preview.js';
 const LINK_TO_GET = 'https://22.javascript.pages.academy/keksobooking/data';
 const failGetData = () => showMassage('Данные не загрузились');
 const onDataSuccess = (data) => {
