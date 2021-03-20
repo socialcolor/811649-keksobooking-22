@@ -1,5 +1,5 @@
 import {
-  offersAddToMap
+  addOffersToMap
 } from './map.js';
 import './form.js';
 import {
@@ -10,7 +10,7 @@ import {
 } from './modal.js';
 import {
   setFilterListener,
-  onChagneFilter
+  onFilterChange
 } from './filter.js';
 import {
   debounce
@@ -19,8 +19,8 @@ import './preview.js';
 const LINK_TO_GET = 'https://22.javascript.pages.academy/keksobooking/data';
 const failGetData = () => showMassage('Данные не загрузились');
 const onDataSuccess = (data) => {
-  offersAddToMap(data);
-  setFilterListener(debounce(() => onChagneFilter(data)));
+  addOffersToMap(data);
+  setFilterListener(debounce(() => onFilterChange(data)));
 }
 
 getData(LINK_TO_GET, onDataSuccess, failGetData);

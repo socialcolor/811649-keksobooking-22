@@ -17,12 +17,17 @@ import {
   filterMap
 } from './filter.js';
 import {
-  resetMainMarker
+  resetMainMarker,
+  addOffersToMap
 } from './map.js';
+import {
+  setDefualtPreview
+} from './preview.js';
 
 
 const MAX_ROOM = 100;
 const MIN_ROOM = 0;
+const LINK_TO_SET = 'https://22.javascript.pages.academy/keksobooking';
 const form = document.querySelector('.ad-form');
 const housingType = form.querySelector('#type');
 const housingPrice = form.querySelector('#price');
@@ -33,7 +38,6 @@ const title = form.querySelector('#title');
 const roomNumber = form.querySelector('#room_number');
 const guestNumber = form.querySelector('#capacity');
 const resetButton = form.querySelector('.ad-form__reset');
-const LINK_TO_SET = 'https://22.javascript.pages.academy/keksobooking';
 
 const changeFormState = (state) => {
   const formElements = form.querySelectorAll('input, select, textarea, button');
@@ -47,6 +51,8 @@ const resetFilterAndForm = () => {
   filterMap.reset();
   setPriceSettings();
   resetMainMarker();
+  setDefualtPreview();
+  addOffersToMap(window.data);
 };
 
 const closeSendMessage = (evt, showMessage, element, statefilterAndForm) => {
@@ -57,12 +63,17 @@ const closeSendMessage = (evt, showMessage, element, statefilterAndForm) => {
     document.removeEventListener('keydown', onEscKeydown)
     if (statefilterAndForm) {
       resetFilterAndForm();
+      setDefualtPreview();
     }
   };
   const onEscKeydown = (evt) => {
     if (isEscEvent(evt)) {
       deleteElement(message)
       document.removeEventListener('keydown', onEscKeydown);
+      if (statefilterAndForm) {
+        resetFilterAndForm();
+        setDefualtPreview();
+      }
     }
   };
 

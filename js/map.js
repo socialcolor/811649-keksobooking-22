@@ -67,7 +67,7 @@ const removeMarkers = () => {
   }
 };
 
-const offersAddToMap = (offers) => {
+const addOffersToMap = (offers) => {
   removeMarkers();
   if (offers.length > 10) {
     offers = offers.slice(0, 10);
@@ -90,7 +90,7 @@ const offersAddToMap = (offers) => {
 };
 
 export {
-  offersAddToMap,
+  addOffersToMap,
   resetMainMarker,
   removeMarkers
 }

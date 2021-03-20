@@ -2,15 +2,15 @@ import {
   changeElementState
 } from './util.js';
 import {
-  offersAddToMap
+  addOffersToMap
 } from './map.js';
+const EMPTY_VALUE = 'any';
 const filterMap = document.querySelector('.map__filters');
 const filterElements = filterMap.querySelectorAll('select, input');
 const house = filterMap.querySelector('#housing-type');
 const price = filterMap.querySelector('#housing-price');
 const room = filterMap.querySelector('#housing-rooms');
 const guest = filterMap.querySelector('#housing-guests');
-const features = filterMap.querySelectorAll('#housing-features input');
 const PRICE_RANGE = {
   low: {
     max: 10000,
@@ -36,8 +36,8 @@ changeFilterState(true);
 
 const filterOfferByPrice = (data) => {
   switch (price.value) {
-    case 'any':
-      return data;
+    case EMPTY_VALUE:
+      return true;
     case 'low':
       return data.offer.price < PRICE_RANGE.low.max;
     case 'middle':
@@ -47,7 +47,7 @@ const filterOfferByPrice = (data) => {
   }
 };
 
-const checkedFeatures = () => {
+/* const checkedFeatures = () => {
   const checkedfeatures = [];
   features.forEach((element) => {
     if (element.checked) {
@@ -55,13 +55,14 @@ const checkedFeatures = () => {
     }
   });
   return checkedfeatures;
-};
+}; */
 
 //Срабатывает если фильтры совпадают на 100% с тем что указано в объявлении
-const compareFeatures = (element, features) => {
-  const checkedFeatures = features;
+
+/* const compareFeatures = (element) => {
+  const checkedFeatures = document.querySelectorAll('input:checked')
   let counter = 0;
-  if (checkedFeatures.length !== 0) {
+  if (checkedFeatures.length) {
     element.offer.features.forEach((element, index, array) => {
       if (array.includes(checkedFeatures[counter])) {
         counter++
@@ -75,24 +76,37 @@ const compareFeatures = (element, features) => {
   } else if (checkedFeatures.length === 0) {
     return true;
   }
+}; */
+
+// Этот вариант срабатывает, если впринципе в объявление содержится отмеченные особенности (не 100 процентное совпадение, другие НЕ отмеченные особенности тоже могут быть)
+const compareFeatures = (element) => {
+  const checkedFeatures = Array.from(document.querySelectorAll('input:checked')).map(input => input.value);
+  let counter = 0;
+  checkedFeatures.forEach((feature) => {
+    const status = element.offer.features.some(value => value === feature);
+    if (status) {
+      counter++
+    }
+  });
+  if (counter === checkedFeatures.length) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 
-const onChagneFilter = (data) => {
-  const filtred = [];
+const onFilterChange = (data) => {
   const type = house.value;
   const rooms = room.value;
   const guests = guest.value;
-  const features = checkedFeatures();
-  data.forEach(element => {
-    const filteredByType = type === 'any' || element.offer.type === type;
-    const filteredByRooms = rooms === 'any' || element.offer.rooms === +rooms;
-    const filteredByGuests = guests === 'any' || element.offer.guests === +guests;
-    if (filteredByType && filteredByRooms && filteredByGuests && filterOfferByPrice(element) && compareFeatures(element, features)) {
-      filtred.push(element)
-    }
+  const filtredOffers = data.filter(element => {
+    const filteredByType = type === EMPTY_VALUE || element.offer.type === type;
+    const filteredByRooms = rooms === EMPTY_VALUE || element.offer.rooms === +rooms;
+    const filteredByGuests = guests === EMPTY_VALUE || element.offer.guests === +guests;
+    return filteredByType && filteredByRooms && filteredByGuests && filterOfferByPrice(element) && compareFeatures(element)
   });
-  offersAddToMap(filtred)
+  addOffersToMap(filtredOffers)
 };
 const setFilterListener = (cb) => {
   filterMap.addEventListener('change', cb);
@@ -102,5 +116,5 @@ export {
   filterMap,
   changeFilterState,
   setFilterListener,
-  onChagneFilter
+  onFilterChange
 }
