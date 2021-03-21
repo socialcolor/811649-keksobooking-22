@@ -3,6 +3,9 @@ import {
   isEscEvent
 } from './util.js';
 
+const templateSuccess = document.querySelector('#success');
+const templateError = document.querySelector('#error')
+
 const showMassage = (text) => {
   const markup = `<div class="alert">
   <div class="overlay"></div>
@@ -30,12 +33,12 @@ const showMassage = (text) => {
 
 
 const showSuccessMessage = () => {
-  const template = document.querySelector('#success').content.cloneNode(true);
+  const template = templateSuccess.content.cloneNode(true);
   document.body.appendChild(template);
 };
 
 const showErrorMessage = () => {
-  const template = document.querySelector('#error').content.cloneNode(true);
+  const template = templateError.content.cloneNode(true);
   document.body.appendChild(template);
 };
 

@@ -47,43 +47,11 @@ const filterOfferByPrice = (data) => {
   }
 };
 
-/* const checkedFeatures = () => {
-  const checkedfeatures = [];
-  features.forEach((element) => {
-    if (element.checked) {
-      checkedfeatures.push(element.value)
-    }
-  });
-  return checkedfeatures;
-}; */
-
-//Срабатывает если фильтры совпадают на 100% с тем что указано в объявлении
-
-/* const compareFeatures = (element) => {
-  const checkedFeatures = document.querySelectorAll('input:checked')
-  let counter = 0;
-  if (checkedFeatures.length) {
-    element.offer.features.forEach((element, index, array) => {
-      if (array.includes(checkedFeatures[counter])) {
-        counter++
-      }
-    });
-    if (counter === element.offer.features.length) {
-      return true
-    } else {
-      return false
-    }
-  } else if (checkedFeatures.length === 0) {
-    return true;
-  }
-}; */
-
-// Этот вариант срабатывает, если впринципе в объявление содержится отмеченные особенности (не 100 процентное совпадение, другие НЕ отмеченные особенности тоже могут быть)
 const compareFeatures = (element) => {
   const checkedFeatures = Array.from(document.querySelectorAll('input:checked')).map(input => input.value);
   let counter = 0;
   checkedFeatures.forEach((feature) => {
-    const status = element.offer.features.some(value => value === feature);
+    const status = element.offer.features.includes(feature);
     if (status) {
       counter++
     }
