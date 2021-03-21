@@ -134,7 +134,7 @@ const validateRoomsAndGuest = () => {
   const rooms = Number(roomNumber.value);
   const geusts = Number(guestNumber.value);
   if (rooms < geusts && geusts !== MIN_ROOM) {
-    roomNumber.setCustomValidity(`Для ${rooms} ${rooms == 1 ? 'комнаты' : 'комнат'} слишком много гостей`);
+    roomNumber.setCustomValidity(`Для ${rooms} ${rooms === 1 ? 'комнаты' : 'комнат'} слишком много гостей`);
   } else if ((rooms === MAX_ROOM && geusts !== MIN_ROOM) || (geusts === MIN_ROOM && rooms !== MAX_ROOM)) {
     roomNumber.setCustomValidity('Такое количество комнат не для гостей');
   } else {
