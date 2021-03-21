@@ -1,25 +1,22 @@
-import {
-  showMassage
-} from './modal.js'
-
-const getData = (onSuccess) => {
-  fetch('https://22.javascript.pages.academy/keksobooking/data')
+const getData = (link, onSuccess, onFail) => {
+  fetch(link)
     .then((response) => {
       if (response.ok) {
         return response.json();
       }
-      showMassage('Данные не загрузились');
+      onFail();
     })
     .then((data) => {
+      window.data = data;
       onSuccess(data);
     })
     .catch(() => {
-      showMassage('Данные не загрузились');
+      onFail();
     })
 };
 
-const sendData = (onSuccess, onFail, body) => {
-  fetch('https://22.javascript.pages.academy/keksobooking', {
+const sendData = (link, onSuccess, onFail, body) => {
+  fetch(link, {
     method: 'POST',
     body,
   })

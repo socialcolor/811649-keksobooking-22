@@ -50,6 +50,18 @@ const removeHandler = (element, act, handler) => {
   element.removeEventListener(act, handler);
 }
 
+function debounce(callback, delay = 500) {
+  let timeoutId;
+
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      timeoutId = null;
+      callback(...args);
+    }, delay);
+  }
+}
+
 export {
   getRandomNumber,
   getRandomNumberFloat,
@@ -57,5 +69,6 @@ export {
   changeElementState,
   deleteElement,
   isEscEvent,
-  removeHandler
+  removeHandler,
+  debounce
 };

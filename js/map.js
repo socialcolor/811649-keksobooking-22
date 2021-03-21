@@ -1,34 +1,32 @@
 /* global L:readonly */
-import {changeElementState} from './util.js';
-import {changeFormState, address} from './form.js';
+import {
+  changeFormState,
+  address
+} from './form.js';
+import {
+  changeFilterState
+} from './filter.js';
+import {
+  createOffersMarkup
+} from './offer.js';
 
 const MAP_LAT = 35.681700;
 const MAP_LNG = 139.753882;
-
-const filter = document.querySelector('.map__filters')
-const changeFilterState = (state) => {
-  const filterElements = filter.querySelectorAll('select, input');
-  if (state) {
-    filter.classList.add('map__filters--disabled');
-  } else {
-    filter.classList.remove('map__filters--disabled');
-  }
-  changeElementState(filterElements, state);
-};
-
-changeFilterState(true);
+const QUANTITY_OFFERS = 10;
+const NUMBER_LENGTH = 5;
+let markers = [];
 
 const onMapLoad = () => {
   changeFilterState(false);
   changeFormState(false);
-  address.value = `${MAP_LAT.toFixed(5)} ${MAP_LNG.toFixed(5)}`
+  address.value = `${MAP_LAT.toFixed(NUMBER_LENGTH)} ${MAP_LNG.toFixed(NUMBER_LENGTH)}`
 };
 
 const map = L.map('map-canvas')
   .on('load', onMapLoad).setView({
     lat: MAP_LAT,
     lng: MAP_LNG,
-  }, 10);
+  }, QUANTITY_OFFERS);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -48,28 +46,53 @@ const offerIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const onMarkerMove = (evt) => address.value = `${evt.target.getLatLng().lat.toFixed(5)} ${evt.target.getLatLng().lng.toFixed(5)}`;
+const onMarkerMove = (evt) => address.value = `${evt.target.getLatLng().lat.toFixed(NUMBER_LENGTH)} ${evt.target.getLatLng().lng.toFixed(NUMBER_LENGTH)}`;
 
-L.marker({
+const mainMarker = L.marker({
   lat: MAP_LAT,
   lng: MAP_LNG,
 }, {
   draggable: true,
   icon: mainIcon,
-}).addTo(map).on('moveend', onMarkerMove);
+});
 
-const addOfferMap = (offers, markup) => {
+mainMarker.addTo(map).on('moveend', onMarkerMove);
+
+const resetMainMarker = () => {
+  mainMarker.setLatLng([MAP_LAT, MAP_LNG]);
+  address.value = `${MAP_LAT.toFixed(NUMBER_LENGTH)} ${MAP_LNG.toFixed(NUMBER_LENGTH)}`;
+};
+
+const removeMarkers = () => {
+  for (let marker of markers) {
+    map.removeLayer(marker);
+  }
+};
+
+const addOffersToMap = (offers) => {
+  removeMarkers();
+  if (offers.length > QUANTITY_OFFERS) {
+    offers = offers.slice(0, QUANTITY_OFFERS);
+  }
+  markers = [];
+  const markup = createOffersMarkup(offers);
   const popups = markup.querySelectorAll('.popup');
   offers.forEach((value, index) => {
-    const marker = L.marker({
+    const newMarker = L.marker({
       lat: value.location.lat,
       lng: value.location.lng,
     }, {
       icon: offerIcon,
     });
-    marker.addTo(map);
-    marker.bindPopup(popups[index]);
+    markers.push(newMarker);
+    newMarker.addTo(map);
+    newMarker.bindPopup(popups[index]);
   });
+  return markers;
 };
 
-export {addOfferMap}
+export {
+  addOffersToMap,
+  resetMainMarker,
+  removeMarkers
+}
